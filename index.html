@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chatbot - Screening Round</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .response {
+            background-color: #fff;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-top: 20px;
+            white-space: pre-line;
+        }
+        .note {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart AI Assistant (Screening Round Prototype)</h1>
+    <p>This prototype showcases a basic AI chatbot integrated with Gemini/OpenAI and MongoDB.</p>
+    <p class="note"><strong>Note:</strong> If real-time responses are unavailable, fallback replies may appear due to free-tier quota limits.</p>
+
+    <input type="text" id="user_input" placeholder="Type your question here..." />
+    <button onclick="sendMessage()">Ask AI</button>
+
+    <div id="response" class="response" style="display:none;"></div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('user_input').value;
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_input: input })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const responseBox = document.getElementById('response');
+                responseBox.style.display = 'block';
+                responseBox.textContent = data.response || data.error;
+            })
+            .catch(err => alert("Something went wrong! " + err));
+        }
+    </script>
+</body>
+</html>
